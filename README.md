@@ -1,6 +1,6 @@
 # ☕ The Incredible Coffee Machine Dashboard Challenge
 
-Welcome to your little coding challenge for getting a little idea of your working sttyle! 🚀
+Welcome to your little coding challenge for getting a little idea of your working style! 🚀
 
 Meet **Brew the Barista Bot** - he's been crafting the perfect cup since 2022, and now he needs YOUR help to build his dream dashboard. This is a delightful 1–2 hour adventure where you'll create a web interface that makes coffee data as smooth as a perfectly pulled espresso shot.
 

@@ -8,3 +8,4 @@
 .env.production
 !.env.example
 
+.idea
