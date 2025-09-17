@@ -1,0 +1,37 @@
+services:
+  api:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: coffee-mock-api
+    ports:
+      - "5001:3001"
+    volumes:
+      - ./server:/usr/src/app
+    environment:
+      - NODE_ENV=development
+    networks:
+      - coffee-net
+
+  web:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+      args:
+        - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+    container_name: coffee-admin-web
+    ports:
+      - "5000:3000"
+    volumes:
+      - ./client:/app
+    environment:
+      - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
+    command: sh -c "npm install && npm run dev"
+    depends_on:
+      - api
+    networks:
+      - coffee-net
+
+networks:
+  coffee-net:
+    driver: bridge
