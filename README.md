@@ -30,11 +30,11 @@ Build a insightful Dashboard showing the coffee machine's current state and tren
 
 - Use `/status` for current state (cups, temp, strength, pH, color, creator)
 - Use `/history` for time series (avgTempC, avgStrength, cupsServed, avgPH, wasteWaterColor)
-- Use the methods of the given framework
-- you can import new bundles if you need them (see Appendix)
 - Create a pleasant dashboard showing status and historical data 
   - You can display it in a clean, funny, crazy, strict or "whatever way you want" style 
 - Commit your work in meaningful small commits to git, add tags if parts of work are finished
+- Use the methods of the given framework (react-admin) whenever possible
+- you can import new bundles if you need them (see Appendix)
 - There is a place for commenting on your work in README under "Applicant Notes"
 
 **Must-Haves (The Coffee Basics):**
