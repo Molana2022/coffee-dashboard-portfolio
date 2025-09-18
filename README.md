@@ -47,6 +47,7 @@ Still some time left? Maybe you are adventurous and want to try:
 - Add ONE delightful visual element (make us smile!)
 - Include ONE interactive feature (let users play!)
 
+- if you have a good idea, you can extend the mock data with more fields, e.g. `brewTime` (see `server/db.json`)
 
 **We're looking for**
 - **Functionality**: Does it work? Can we see coffee data, current state and historical?
