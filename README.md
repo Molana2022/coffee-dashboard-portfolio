@@ -64,7 +64,53 @@ Remember: There's no single "right" answer here. We want to see YOUR personality
 
 # 📜 Applicant Notes
 
-here is space for your documentation, comments, follow-ups, questions, etc.
+## Applicant Notes
+
+### What I implemented (so far)
+- **Dashboard wired to real data:**  
+  - `coffeeStatus (id=1)` via `react-admin` **`useGetOne('coffeeStatus', { id: 1 })`**  
+  - `coffeeHistory` via **`useGetList('coffeeHistory', …)`**
+- **UI polish for Status:**  
+  - Extracted `StatCard` (reusable) and used an MUI Grid for responsive layout.  
+  - **Water color swatch** moved to a CSS Module (`Dashboard.module.css`) using a CSS variable.  
+  - **Cups gauge** (visual indicator) showing `cupsLeft / capacity`.
+- **Configurable capacity:**  
+  - `NEXT_PUBLIC_MAX_CUPS` (fallback to 15) used to control the gauge’s max when API doesn’t provide `capacity`.
+
+### Key decisions & rationale  
+- **Keep Status as a singleton:** access with `coffeeStatus/1` (aliased publicly as `/status`). Simpler for RA and matches the domain.  
+- **Styling strategy:**  
+  - Kept layout with MUI (Grid/Paper/Typography) for consistency.  
+  - Moved small, repeatable styles (color swatches) to a CSS Module for readability.  
+
+### How to run (dev)
+- **Docker:**  
+  - `docker compose up --build`
+  - App: `http://localhost:5000`  
+  - API: `http://localhost:5001` (`/coffeeStatus/1`, `/coffeeHistory`, aliased `/status`, `/history`)
+- **Environment (client):**  
+  - `NEXT_PUBLIC_API_URL=http://localhost:5001`  
+  - `NEXT_PUBLIC_MAX_CUPS=15` *(optional, used by the gauge)*
+
+### What I would do next 
+- **Charts (Recharts):** Add a line chart for `avgTempC` and `cupsServed`, with a time range filter (1h / 3h / all).
+- **Computed metric – “Freshness”:** Minutes since `lastBrewFinishedAt` (lower is fresher). Display as a stat on the dashboard.
+- **UX polish:** Better empty/loading/error states, readable date formatting, minor type refinements.
+- **Alerts:** Simple thresholds, e.g., low `cupsLeft` warning or out-of-range pH.
+
+### Code pointers
+- `client/components/ui/StatCard.tsx` – reusable stat card  
+- `client/components/Dashboard.module.css` – CSS module for color swatches
+
+### Open question – Auto-reload during development
+Right now, when I change code, I restart the containers to see updates:
+1) Ctrl + C
+2) docker compose down
+3) docker compose up --build
+
+What is your recommended setup so that code changes are picked up automatically in the browser and in the mock API, without restarting Docker each time?
+
+If possible, could you share the exact commands or docker-compose changes you prefer?  
 
 ---
 # Appendix

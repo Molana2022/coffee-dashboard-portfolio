@@ -1,0 +1,20 @@
+.swatch {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 1px solid #ccc;
+    vertical-align: middle;
+    margin-right: 8px; 
+    border-radius: 4px;
+    background: var(--swatch-color, #000); 
+}
+.wasteWaterSwatch {
+    display: 'inline-block'; 
+    width: 12px; 
+    height: 12px; 
+    border: '1px solid #ccc'; 
+    verticalAlign: 'middle'; 
+    margin-right: 4px;     
+    border-radius: 2px;
+    background: var(--waste-water-color, #000); 
+}
