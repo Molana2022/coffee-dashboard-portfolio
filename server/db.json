@@ -2,36 +2,25 @@
   "coffeeStatus": [
     {
       "id": 1,
-      "capacity": 15,
       "cupsLeft": 7,
       "temperatureC": 68.4,
       "strength": 0.78,
       "waterPH": 6.8,
       "waterColor": "#4B2E2B",
       "creator": "Ava the Barista Bot",
-      "lastBrewStartedAt": "2025-09-17T13:45:00.000Z",
-      "lastBrewFinishedAt": "2025-09-17T13:52:00.000Z",
-      "updatedAt": "2025-09-17T13:55:00.000Z"
+      "lastBrewStartedAt": "2025-09-25T13:45:00.000Z",
+      "lastBrewFinishedAt": "2025-09-25T13:52:00.000Z",
+      "updatedAt": "2025-09-26T13:55:00.000Z"
     }
   ],
   "coffeeHistory": [
-    {
-      "id": 6,
-      "timestamp": "2025-09-17T12:30:00.000Z",
-      "cupsServed": 5,
-      "avgTempC": 69.8,
-      "avgStrength": 0.76,
-      "avgPH": 6.8,
-      "wasteWaterColor": "#543833"
-    },
-    {
-      "id": 7,
-      "timestamp": "2025-09-17T13:00:00.000Z",
-      "cupsServed": 4,
-      "avgTempC": 70.1,
-      "avgStrength": 0.77,
-      "avgPH": 6.85,
-      "wasteWaterColor": "#4E332E"
-    }
+    { "id": 1, "timestamp": "2025-09-26T10:00:00.000Z", "cupsServed": 2, "avgTempC": 72.0, "avgStrength": 0.72, "avgPH": 7.0, "wasteWaterColor": "#6A463F" },
+    { "id": 2, "timestamp": "2025-09-26T10:30:00.000Z", "cupsServed": 3, "avgTempC": 71.5, "avgStrength": 0.73, "avgPH": 6.95, "wasteWaterColor": "#634039" },
+    { "id": 3, "timestamp": "2025-09-26T11:00:00.000Z", "cupsServed": 4, "avgTempC": 70.9, "avgStrength": 0.74, "avgPH": 6.9, "wasteWaterColor": "#5F3C34" },
+    { "id": 4, "timestamp": "2025-09-26T11:30:00.000Z", "cupsServed": 3, "avgTempC": 70.5, "avgStrength": 0.75, "avgPH": 6.88, "wasteWaterColor": "#5A3A36" },
+    { "id": 5, "timestamp": "2025-09-26T12:00:00.000Z", "cupsServed": 3, "avgTempC": 71.2, "avgStrength": 0.74, "avgPH": 6.9, "wasteWaterColor": "#5A3A36" },
+    { "id": 6, "timestamp": "2025-09-26T15:30:00.000Z", "cupsServed": 5, "avgTempC": 69.8, "avgStrength": 0.76, "avgPH": 6.8, "wasteWaterColor": "#543833" },
+    { "id": 7, "timestamp": "2025-09-26T16:00:00.000Z", "cupsServed": 4, "avgTempC": 70.1, "avgStrength": 0.77, "avgPH": 6.85, "wasteWaterColor": "#4E332E" },
+    { "id": 8, "timestamp": "2025-09-26T16:30:00.000Z", "cupsServed": 6, "avgTempC": 68.9, "avgStrength": 0.79, "avgPH": 6.82, "wasteWaterColor": "#4B2E2B" }
   ]
 }

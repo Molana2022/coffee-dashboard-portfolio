@@ -1,117 +1,85 @@
 "use client";
 import * as React from 'react';
 import {Title, useGetList, useGetOne} from 'react-admin';
-import StatCard from '../components/ui/StatCard';
-import {Box, Divider, Stack, Grid, Typography, LinearProgress } from '@mui/material';
-import styles from './Dashboard.module.css';
+import {Box, Divider, Typography, Alert } from '@mui/material';
+import MachineStatus from './sections/MachineStatus';
+import BrewingTrends from './charts/BrewingTrends';
+import type { CoffeeStatus, CoffeeHistoryEntry, TrendPoint, RangeKey } from './types';
+import RecentBrews from './sections/RecentBrews';
 
 export default function Dashboard() {
-  // Actual status from /coffeeStatus/1
+
   const { data: status, isLoading: statusLoading, error: statusError } =
-    useGetOne('coffeeStatus', { id: 1 });
+    useGetOne<CoffeeStatus>('coffeeStatus', { id: 1 });
+  const MAX_CUPS = Number(process.env.NEXT_PUBLIC_MAX_CUPS) || 8;
 
   // Fetch recent history entries
-  const { data: history, isLoading: historyLoading, error: historyError } = useGetList(
+  const RECENT_COUNT = 5;
+  const { data: history  = [], isLoading: historyLoading, error: historyError } = useGetList<CoffeeHistoryEntry>(
     'coffeeHistory',
     {
-      pagination: { page: 1, perPage: 5 },
+      pagination: { page: 1, perPage: RECENT_COUNT },
       sort: { field: 'timestamp', order: 'DESC' },
       filter: {},
     },
     { retry: 1 }
   );
-  const MAX_CUPS = Number(process.env.NEXT_PUBLIC_MAX_CUPS) || 15;
-  //console.log('MAX_CUPS=' , MAX_CUPS);
-  //loading 
-  if (statusLoading || historyLoading) 
-    return <Box sx={{ p: 3 }}>Loading…</Box>;
 
-  if (statusError) 
-    return <Box sx={{ p: 3, color: 'error.main' }}>Error fetching status</Box>;
+  // Brewing Trends
+  const [range, setRange] = React.useState<RangeKey>('all');
 
-  if (historyError) 
-    return <Box sx={{ p: 3, color: 'error.main' }}>Error fetching history</Box>;
+  // --- Fetching History data (typed)
+  const {
+    data: historyChart = [],
+    isLoading: chartLoading,
+    error: chartError,
+  } = useGetList<CoffeeHistoryEntry>('coffeeHistory', {
+    pagination: { page: 1, perPage: 100 },     
+    sort: { field: 'timestamp', order: 'ASC' }, 
+    filter: {},
+  });
 
+  // X Axis
+  const trendData: TrendPoint[] = React.useMemo(() => {
+    const sorted = [...historyChart].sort(
+      (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+    );
+    return sorted.map((h) => ({
+      ...h,
+      tLabel: new Date(h.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+    }));
+  }, [historyChart]);
+
+  // --- Filter by time range
+  const filteredData: TrendPoint[] = React.useMemo(() => {
+    if (range === 'all') return trendData;
+
+    const hours = range === '1h' ? 1 : 3;
+    const nowTs = Date.now();
+    const fromTs = nowTs - hours * 60 * 60 * 1000;
+
+    return trendData.filter((d) => {
+      const t = new Date(d.timestamp).getTime();
+      return t >= fromTs && t <= nowTs; 
+    });
+  }, [trendData, range]);
+
+  
   return (
-    <Box sx={{ mb: 2 }}>
+    <Box sx={{ m: 2 }}>
       <Title title="Dashboard" />
-        {status && (
-          <Box sx={{ mb: 2 }}>
-            <Typography variant="h6" sx={{ my: 1 }}>Machine Status</Typography>
+      
+      {statusError ? (
+        <Alert severity="error">Error fetching status</Alert>
+      ) : statusLoading ? (
+      <Typography>Loading status…</Typography>
+      ): status ? (
+          <MachineStatus status={status} maxCups={MAX_CUPS} />
+      ) : null}
 
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6} md={4}>
-                <StatCard label="Cups left" value={status.cupsLeft ?? 0} />
-              </Grid>
-              <Grid item xs={12} sm={6} md={4}>
-                <StatCard label="Temperature" value={`${status.temperatureC} °C`} />
-              </Grid>
-              <Grid item xs={12} sm={6} md={4}>
-                <StatCard label="Strength" value={status.strength} />
-              </Grid>
-              <Grid item xs={12} sm={6} md={4}>
-                <StatCard label="pH" value={status.waterPH} />
-              </Grid>
-              <Grid item xs={12} sm={6} md={4}>
-                <StatCard label="Water Color" value={
-                  <>
-                    <Box 
-                      component="span" 
-                      className= {styles.swatch} 
-                      style={{ ['--swatch-color' as any]: status.waterColor }} />
-                    {status.waterColor}
-                  </>
-                }
-              />
-              </Grid>
-              <Grid item xs={12} sm={6} md={4}>
-                <StatCard label="Creator" value={status.creator} />
-              </Grid>
-            </Grid>
-
-            <Box sx={{ mt: 2 }}>
-              <Typography variant="body2" sx={{ mb: 0.5 }}>Cups left gauge</Typography>
-              <CupGauge value={status.cupsLeft ?? 0} max={status.capacity ?? MAX_CUPS} />
-            </Box>
-          </Box>
-        )}
-
-        <Divider sx={{ my: 2 }} />
-
-        {history && (
-            <Stack spacing={1}>
-                {history.map((h: any) => (
-                    <Box key={h.id}>
-                        {new Date(h.timestamp).toLocaleString()}: 
-                        {' '}Cups: {h.cupsServed} · 
-                        {' '}. Temp: {h.avgTempC} °C · 
-                        {' '}. Strength: {h.avgStrength} · 
-                        {' '}. pH: {h.avgPH} · 
-                        {' '}. Water:{' '} 
-                        <Box 
-                          component="span" 
-                          className={styles.wasteWaterSwatch}
-                          style={{ ['--waste-water-color' as any]: h.wasteWaterColor }} />
-                        {h.wasteWaterColor}
-                    </Box>
-                ))}
-            </Stack>
-        )}
+      <Divider sx={{ my: 3 }} />
+      <BrewingTrends data={filteredData} range={range} onChangeRange={setRange} loading={chartLoading}  error={chartError} />
+      <RecentBrews history={history} loading={historyLoading} error={historyError} count={RECENT_COUNT} />
     </Box>
   );
 }
-
-function CupGauge({ value, max = 15 }: { value: number; max?: number }) {
-  const safeMax = Math.max(1, max);
-  const pct = Math.max(0, Math.min(100, Math.round((value / safeMax) * 100)));
-  return (
-    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-      <span>☕</span>
-      <Box sx={{ flex: 1 }}>
-        <LinearProgress variant="determinate" value={pct} />
-      </Box>
-      <Typography variant="body2">{value}/{safeMax}</Typography>
-    </Box>
-  );
-}
-

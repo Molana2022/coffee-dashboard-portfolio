@@ -76,6 +76,7 @@ Remember: There's no single "right" answer here. We want to see YOUR personality
   - **Cups gauge** (visual indicator) showing `cupsLeft / capacity`.
 - **Configurable capacity:**  
   - `NEXT_PUBLIC_MAX_CUPS` (fallback to 15) used to control the gauge’s max when API doesn’t provide `capacity`.
+  - **Brewing Trends chart:** Time on X; `avgTempC` as a line (left axis) + `cupsServed` as bars (right axis).
 
 ### Key decisions & rationale  
 - **Keep Status as a singleton:** access with `coffeeStatus/1` (aliased publicly as `/status`). Simpler for RA and matches the domain.  
